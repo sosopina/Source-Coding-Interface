@@ -1,0 +1,36 @@
+%                       ENSA FES                       %
+%                  2ème Année GSEII                    %
+%******************************************************%
+% --Title: Matlab Inteface                             %
+% --Project: Source Coding Img/Txt                     %
+%******************************************************%
+% --File : Source Coding                               %
+% --Authors :Ghourdou Mouad & Zaim Oussama             %
+% --Created : 24/05/2023                               %
+%******************************************************%
+% --Description : this code take in the image and      %
+%                    reads it on a zigzag form         % 
+%******************************************************%
+%******************************************************%
+function [vector] = zigzagRead(image)
+
+    if size(image,3)==3
+        image= rgb2gray(image);
+    end
+    
+    if ndims(image) ~= 2
+        error('Input image must be a 2-D matrix.');
+    end
+    
+    N = size(image, 1);
+    vector = [];
+    should_flip = 0;
+    for i = (N-1):-1:(1-N)
+        diagonal_vector = fliplr(diag(fliplr(image), i)');
+        if (should_flip)
+            diagonal_vector = fliplr(diagonal_vector);
+        end
+        vector = [vector diagonal_vector];
+        should_flip = ~should_flip;
+    end
+end
